@@ -1,11 +1,17 @@
 // =========================================================
-// GENERADOR DEL MENÚ LATERAL DINÁMICO
+// GENERADOR DEL MENÚ LATERAL DINÁMICO + BOTÓN DARK MODE
 // =========================================================
 function cargarMenu(rutaBase) {
     const aside = document.querySelector('aside');
     if (!aside) return;
 
     aside.innerHTML = `
+        <div class="sidebar-header">
+            <h2>Matemáticas para videojuegos II</h2>
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema" title="Alternar Modo Claro / Oscuro">
+                <i class="fa-solid fa-moon" id="theme-icon"></i>
+            </button>
+        </div>
         <h2>Contenidos</h2>
         <nav>
             <ul>
@@ -19,6 +25,41 @@ function cargarMenu(rutaBase) {
             <li><a href="${rutaBase}ejercicios/ejercicio-1.html"><i class="fa-solid fa-dumbbell"></i> Ejercicio 1: Actualizar proyecto</a></li>
         </ul>
     `;
+
+    // Inicializamos la lógica del tema una vez inyectado el HTML del menú
+    inicializarTema();
+}
+
+// =========================================================
+// GESTOR DE ESTADO DEL MODO OSCURO
+// =========================================================
+function inicializarTema() {
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (!themeToggleBtn) return;
+
+    const themeIcon = document.getElementById('theme-icon');
+
+    // Función auxiliar para cambiar el icono de FontAwesome
+    const actualizarIcono = (isDark) => {
+        if (isDark) {
+            themeIcon.className = 'fa-solid fa-sun'; // Sol para volver al modo claro
+        } else {
+            themeIcon.className = 'fa-solid fa-moon'; // Luna para activar el modo oscuro
+        }
+    };
+
+    // Comprobamos el estado inicial ya aplicado en el script del head
+    const isDarkInitial = document.documentElement.classList.contains('dark-mode');
+    actualizarIcono(isDarkInitial);
+
+    // Escuchador de clics
+    themeToggleBtn.addEventListener('click', () => {
+        const isDarkNow = document.documentElement.classList.toggle('dark-mode');
+        actualizarIcono(isDarkNow);
+        
+        // Almacenamos la preferencia del usuario permanentemente
+        localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
+    });
 }
 
 // =========================================================
@@ -26,15 +67,13 @@ function cargarMenu(rutaBase) {
 // =========================================================
 const canvasComplejidad = document.getElementById('grafo-complejidad');
 if (canvasComplejidad) {
-    // GRÁFICO TEMA 1: COMPLEJIDAD BIG O
-    const ctxComplejidad = document.getElementById('grafo-complejidad').getContext('2d');
-
-    // Generar puntos para las curvas
+    const ctxComplejidad = canvasComplejidad.getContext('2d');
     const labels = Array.from({length: 20}, (_, i) => i + 1);
-    const dataO1 = labels.map(() => 5);
-    const dataOLogN = labels.map(n => Math.log2(n) * 10);
-    const dataON = labels.map(n => n * 2);
-    const dataONLogN = labels.map(n => n * Math.log2(n));
+
+    const dataO1 = labels.map(() => 5); 
+    const dataOLogN = labels.map(n => Math.log2(n) * 10 + 2); 
+    const dataON = labels.map(n => n); 
+    const dataONLogN = labels.map(n => n * Math.log2(n) + n); 
     const dataON2 = labels.map(n => Math.pow(n, 2) / 2);
 
     new Chart(ctxComplejidad, {
@@ -58,8 +97,7 @@ if (canvasComplejidad) {
                 y: { min: 0, max: 100, title: { display: true, text: 'Operaciones / Tiempo' } },
                 x: { title: { display: true, text: 'Datos de Entrada (n)' } }
             },
-            elements: { point: { radius: 0 } } // Oculta los puntos para dejar curvas limpias
+            elements: { point: { radius: 0 } } 
         }
-        });
+    });
 }
-

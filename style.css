@@ -7,10 +7,37 @@
     --accent-color: #3182ce;
     --sidebar-bg: #f7fafc;
     --sidebar-border: #e2e8f0;
+    --sidebar-hover-bg: #edf2f7;
     --code-bg: #f8f9fa;
     --code-border: #e9ecef;
     --callout-def-border: #3182ce;
+    --callout-def-bg: #ebf8ff;
     --callout-challenge-border: #38a169;
+    --callout-challenge-bg: #f0fff4;
+    --callout-default-bg: #f7fafc;
+    --table-even-bg: #f8f9fa;
+    --canvas-bg: #ffffff;
+}
+
+/* PALETA DE COLORES MODO OSCURO */
+:root.dark-mode {
+    --bg-color: #121214; /* Fondo oscuro moderno */
+    --text-color: #e2e8f0; /* Texto claro */
+    --primary-color: #90cdf4; /* Títulos celestes para óptima legibilidad */
+    --secondary-color: #cbd5e0;
+    --accent-color: #63b3ed;
+    --sidebar-bg: #1a1b23; /* Sidebar ligeramente más oscuro que el fondo principal */
+    --sidebar-border: #2d3748;
+    --sidebar-hover-bg: #2d3748;
+    --code-bg: #1e222b;
+    --code-border: #2d3748;
+    --callout-def-border: #4299e1;
+    --callout-def-bg: #1a2a44;
+    --callout-challenge-border: #48bb78;
+    --callout-challenge-bg: #16302b;
+    --callout-default-bg: #1a1b23;
+    --table-even-bg: #1e222b;
+    --canvas-bg: #1a1b23;
 }
 
 * {
@@ -19,12 +46,24 @@
     padding: 0;
 }
 
-body {
+html, body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.7;
     display: flex;
+    overflow-x: hidden;
+    max-width: 100vw;
+    overscroll-behavior-x: none;
+    /* Transición fluida al cambiar de tema */
+    transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+/* Regla global para que ningún multimedia rompa el layout */
+img, video, canvas, iframe, object, embed, svg {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Evita pequeños márgenes fantasma en la parte inferior */
 }
 
 /* --- SIDEBAR DE NAVEGACIÓN --- */
@@ -38,6 +77,47 @@ aside {
     border-right: 1px solid var(--sidebar-border);
     padding: 2rem 1.5rem;
     overflow-y: auto;
+    z-index: 100;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* DISEÑO DE LA CABECERA Y EL BOTÓN DE CAMBIO DE TEMA */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--sidebar-border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s ease;
+}
+
+.sidebar-header h2 {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    max-width: 75%;
+}
+
+.theme-toggle-btn {
+    background: none;
+    border: 1px solid var(--sidebar-border);
+    color: var(--secondary-color);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--sidebar-hover-bg);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 aside h2 {
@@ -48,6 +128,7 @@ aside h2 {
     letter-spacing: 0.05em;
     border-bottom: 2px solid var(--sidebar-border);
     padding-bottom: 0.5rem;
+    transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 aside ul {
@@ -69,7 +150,7 @@ aside ul li a {
 }
 
 aside ul li a:hover, aside ul li a.active {
-    background-color: #edf2f7;
+    background-color: var(--sidebar-hover-bg);
     color: var(--primary-color);
     font-weight: 500;
 }
@@ -80,6 +161,7 @@ main {
     padding: 3rem 4rem;
     max-width: 900px;
     width: calc(100% - 280px);
+    min-width: 0; 
 }
 
 /* --- PORTADA Y TITULARES --- */
@@ -87,6 +169,7 @@ header {
     margin-bottom: 4rem;
     border-bottom: 1px solid var(--sidebar-border);
     padding-bottom: 2rem;
+    transition: border-color 0.3s ease;
 }
 
 header h1 {
@@ -94,12 +177,14 @@ header h1 {
     color: var(--primary-color);
     line-height: 1.2;
     margin-bottom: 1rem;
+    transition: color 0.3s ease;
 }
 
 header p.subtitle {
     font-size: 1.1rem;
     color: var(--secondary-color);
     font-style: italic;
+    transition: color 0.3s ease;
 }
 
 section {
@@ -114,26 +199,28 @@ h2.section-title {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    transition: color 0.3s ease;
 }
 
 h3 {
     font-size: 1.3rem;
     color: var(--secondary-color);
     margin: 1.5rem 0 0.75rem 0;
+    transition: color 0.3s ease;
 }
 
 p {
     margin-bottom: 1.25rem;
 }
 
-/* --- SÍMBOLOS Y SANGRÍA PARA LISTAS DEL CONTENIDO --- */
+/* --- SÍMBOLOS Y SANGRÍA PARA LISTAS --- */
 main ul, main ol {
-    padding-left: 2rem; /* Añade la sangría automáticamente */
-    margin-bottom: 1.25rem; /* Mantiene el espaciado inferior igual que los párrafos */
+    padding-left: 2rem;
+    margin-bottom: 1.25rem;
 }
 
 main li {
-    margin-bottom: 0.5rem; /* Da un poco de aire entre cada punto de la lista */
+    margin-bottom: 0.5rem;
 }
 
 /* --- ELEMENTOS DE MAQUETACIÓN ESPECIALES --- */
@@ -146,19 +233,29 @@ pre {
     padding: 1.25rem;
     overflow-x: auto;
     margin-bottom: 1.5rem;
+    max-width: 100%;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 code {
     font-family: "Fira Code", Consolas, Monaco, monospace;
     font-size: 0.9rem;
-    color: #d63384; /* Color sutil para código inline */
+    color: #d63384;
 }
 
 pre code {
-    color: var(--text-color); /* Restablecer para bloques de código completo */
+    color: var(--text-color);
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
 }
 
 /* Tablas / Matrices */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -170,6 +267,7 @@ th, td {
     padding: 0.75rem 1rem;
     border: 1px solid var(--sidebar-border);
     text-align: left;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 th {
@@ -179,7 +277,7 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: #f8f9fa;
+    background-color: var(--table-even-bg);
 }
 
 /* Cuadros Destacados (Callouts) */
@@ -188,17 +286,18 @@ tr:nth-child(even) {
     padding: 1.25rem;
     margin-bottom: 1.5rem;
     border-radius: 0 6px 6px 0;
-    background-color: #f7fafc;
+    background-color: var(--callout-default-bg);
+    transition: background-color 0.3s ease;
 }
 
 .callout.definition {
     border-left-color: var(--callout-def-border);
-    background-color: #ebf8ff;
+    background-color: var(--callout-def-bg);
 }
 
 .callout.challenge {
     border-left-color: var(--callout-challenge-border);
-    background-color: #f0fff4;
+    background-color: var(--callout-challenge-bg);
 }
 
 .callout-title {
@@ -212,27 +311,45 @@ tr:nth-child(even) {
 .callout.definition .callout-title { color: #2b6cb0; }
 .callout.challenge .callout-title { color: #276749; }
 
-/* Contenedor de Gráficos */
-.canvas-container {
-    background: #ffffff;
+:root.dark-mode .callout.definition .callout-title { color: #90cdf4; }
+:root.dark-mode .callout.challenge .callout-title { color: #81e6d9; }
+
+/* Contenedor universal para gráficos y multimedia compleja */
+.canvas-container, .media-wrapper {
+    background: var(--bg-color); /* Se adapta al modo oscuro si tienes variable */
     border: 1px solid var(--sidebar-border);
     border-radius: 6px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    max-width: 500px;
+    
+    /* Reglas clave para la robustez en móviles */
+    width: 100%;
+    max-width: 100%;
+    position: relative; /* Crucial para librerías como Chart.js */
+    overflow-x: auto; /* Permite scroll interno si el contenido es enorme */
+    -webkit-overflow-scrolling: touch; /* Hace que el scroll táctil sea suave en iOS */
 }
+
 
 /* ========================================================= */
 /* ADAPTACIÓN PARA MÓVILES Y TABLETS (DISEÑO RESPONSIVE)     */
 /* ========================================================= */
 
 @media screen and (max-width: 768px) {
-    /* 1. Cambiamos la estructura de columnas a filas */
+    .canvas-container, .media-wrapper {
+        padding: 0.75rem; 
+    }
+
+    /* Si decides que el gráfico de Chart.js DEBE tener un ancho mínimo para ser legible */
+    /* Puedes forzar al canvas interno a no encogerse de más, activando el scroll horizontal del contenedor */
+    .canvas-container canvas {
+        min-width: 400px; /* Ajusta este valor según la legibilidad de tu gráfico */
+    }
+
     body {
         flex-direction: column;
     }
 
-    /* 2. El menú lateral deja de estar fijo y pasa a la parte superior */
     aside {
         position: static;
         width: 100%;
@@ -242,31 +359,39 @@ tr:nth-child(even) {
         padding: 1.5rem;
     }
 
-    /* 3. El contenido principal pierde el margen izquierdo y aprovecha toda la pantalla */
     main {
         margin-left: 0;
         width: 100%;
-        padding: 2rem 1.25rem; /* Reducimos los márgenes para pantallas pequeñas */
+        padding: 2rem 1.25rem;
     }
 
-    /* 4. Ajustamos los tamaños de los textos principales para que no saturen la pantalla */
-    header h1 {
-        font-size: 1.8rem;
-    }
+    header h1 { font-size: 1.8rem; }
+    h2.section-title { font-size: 1.5rem; }
 
-    h2.section-title {
-        font-size: 1.5rem;
-    }
-
-    /* 5. Magia para las tablas: permite deslizar el dedo horizontalmente si son muy anchas */
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
 
-    /* 6. Ajustar el padding de los gráficos para que quepan bien */
-    .canvas-container {
-        padding: 1rem;
+
+    pre code {
+        font-size: 0.8rem; 
+    }
+
+    /* Fórmulas matemáticas (KaTeX) */
+    .katex-display {
+        display: block; 
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
+        -webkit-overflow-scrolling: touch; 
+    }
+
+    .katex {
+        white-space: normal !important;
+        word-break: break-word;
     }
 }
