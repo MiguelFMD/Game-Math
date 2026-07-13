@@ -221,3 +221,52 @@ tr:nth-child(even) {
     margin-bottom: 1.5rem;
     max-width: 500px;
 }
+
+/* ========================================================= */
+/* ADAPTACIÓN PARA MÓVILES Y TABLETS (DISEÑO RESPONSIVE)     */
+/* ========================================================= */
+
+@media screen and (max-width: 768px) {
+    /* 1. Cambiamos la estructura de columnas a filas */
+    body {
+        flex-direction: column;
+    }
+
+    /* 2. El menú lateral deja de estar fijo y pasa a la parte superior */
+    aside {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 2px solid var(--sidebar-border);
+        padding: 1.5rem;
+    }
+
+    /* 3. El contenido principal pierde el margen izquierdo y aprovecha toda la pantalla */
+    main {
+        margin-left: 0;
+        width: 100%;
+        padding: 2rem 1.25rem; /* Reducimos los márgenes para pantallas pequeñas */
+    }
+
+    /* 4. Ajustamos los tamaños de los textos principales para que no saturen la pantalla */
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    h2.section-title {
+        font-size: 1.5rem;
+    }
+
+    /* 5. Magia para las tablas: permite deslizar el dedo horizontalmente si son muy anchas */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* 6. Ajustar el padding de los gráficos para que quepan bien */
+    .canvas-container {
+        padding: 1rem;
+    }
+}
