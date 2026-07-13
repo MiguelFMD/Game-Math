@@ -316,18 +316,18 @@ tr:nth-child(even) {
 
 /* Contenedor universal para gráficos y multimedia compleja */
 .canvas-container, .media-wrapper {
-    background: var(--bg-color); /* Se adapta al modo oscuro si tienes variable */
+    background: var(--canvas-bg);
     border: 1px solid var(--sidebar-border);
     border-radius: 6px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    
-    /* Reglas clave para la robustez en móviles */
     width: 100%;
     max-width: 100%;
-    position: relative; /* Crucial para librerías como Chart.js */
-    overflow-x: auto; /* Permite scroll interno si el contenido es enorme */
-    -webkit-overflow-scrolling: touch; /* Hace que el scroll táctil sea suave en iOS */
+    
+    position: relative; /* Requerido por Chart.js para calcular tamaños relativos */
+    height: 400px;      /* Alto controlado y elegante para pantallas de escritorio */
+    overflow-x: auto;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 
@@ -344,6 +344,8 @@ tr:nth-child(even) {
     /* Puedes forzar al canvas interno a no encogerse de más, activando el scroll horizontal del contenedor */
     .canvas-container canvas {
         min-width: 400px; /* Ajusta este valor según la legibilidad de tu gráfico */
+        height: 320px;
+        padding: 1rem 0.5rem;
     }
 
     body {
