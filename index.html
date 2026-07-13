@@ -258,10 +258,14 @@
         <nav>
             <ul>
                 <li><a href="#tema-0"><i class="fa-solid fa-bookmark"></i> Tema 0: Introducción</a></li>
-                <li><a href="#tema-1"><i class="fa-solid fa-chart-line"></i> Tema 1: Análisis y costes de algoritmos</a></li>
+                <li><a href="#tema-1"><i class="fa-solid fa-bookmark"></i> Tema 1: Análisis y costes de algoritmos</a></li>
 
-                </ul>
+            </ul>
         </nav>
+        <h2>Ejercicios</h2>
+            <ul>
+                <li><a href="#repositorio"><i class="fa-solid fa-dumbbell"></i> Ejercicio 0: Introducción al repositorio</a></li>
+            </ul>
     </aside>
 
     <main>
@@ -273,7 +277,7 @@
 
         <section id="tema-0">
             <h2 class="section-title">
-                <i class="fa-solid fa-graduation-cap"></i> Tema 0: Introducción y Entorno de Trabajo
+                <i class="fa-solid fa-bookmark"></i> Tema 0: Introducción y Entorno de Trabajo
             </h2>
             <p>Bienvenido al libro digital interactivo de la asignatura. Aquí encontrarás todo el contenido relacionado con la asignatura, además de ejercicios, ayudar y recursos adicionales..</p>
 
@@ -288,7 +292,7 @@
                 <li><strong>Proyecto grupal 30% :</strong> Diseñar y desarrollar un videojuego con el contenido de la asignatura. Habrán exposiciones/devlogs mensuales para controlar el avance.</li>
             </ul>
 
-            <p>Hay que sacar mínimo un 4 en todos los apartados para aprobar la asignatura.</p>
+            <p>Hay que <strong>sacar mínimo un 4 en todos los apartados</strong> para aprobar la asignatura.</p>
 
             <div class="callout challenge">
                 <div class="callout-title"><i class="fa-solid fa-robot"></i> ¿Se podrá usar IA?</div>
@@ -296,21 +300,16 @@
                     cualquier trabajo de los anteriormente mencionados.</strong> </p>
             </div>
 
-            <h3>3. Visualización Gráfica Interactiva</h3>
-            <p>Utilizaremos gráficos interactivos para entender visualmente el comportamiento de los vectores y los sistemas de coordenadas:</p>
+            <h3>3. Metodología de trabajo</h3>
+            <p>Utilizaremos el siguiente <a href="https://github.com/MiguelFMD/GameMath_II_Sandbox_Project"> repositorio</a> tanto para ejercicios de clase, tareas y exámenes. 
+                Para saber cómo usar el repositorio es recomendable realizar la <a href="#repositorio"> introducción al repositorio</a>.
+            </p>
 
-            <div class="canvas-container">
-                <canvas id="grafo-ejemplo"></canvas>
-            </div>
-
-            <div class="callout challenge">
-                <div class="callout-title"><i class="fa-solid fa-code"></i> Reto de Programación</div>
-                <p>¿Podrías optimizar la función <code>Magnitude()</code> para comparaciones de distancia sin utilizar la costosa operación de raíz cuadrada (<code>Sqrt</code>)? Lo resolveremos en el Tema 1.</p>
-            </div>
+            
         </section>
         <section id="tema-1">
             <h2 class="section-title">
-                <i class="fa-solid fa-stopwatch"></i> Tema 1: Análisis y costes de algoritmos
+                <i class="fa-solid fa-bookmark"></i> Tema 1: Análisis y costes de algoritmos
             </h2>
             
             <h3>1. ¿Qué es la eficiencia?</h3>
@@ -478,34 +477,16 @@ int FibonacciRecursivo(int n) {
                 <li><strong>¡Cuidado con la recursividad!</strong> Algoritmos como Quicksort pueden tener un coste espacial oculto en el peor caso ($O(n)$) si la partición de datos es mala, pudiendo desbordar la pila.</li>
             </ul>
         </section>
+        
+        <section id="repositorio">
+         <h2 class="section-title">
+                <i class="fa-solid fa-dumbbell"></i> Ejercicio 0: Introducción al repositorio
+            </h2>
+        </section>
 
     </main>
 
     <script>
-        const ctx = document.getElementById('grafo-ejemplo').getContext('2d');
-        new Chart(ctx, {
-            type: 'scatter',
-            data: {
-                datasets: [{
-                    label: 'Vector de Velocidad (V)',
-                    data: [{x: 0, y: 0}, {x: 4, y: 3}],
-                    showLine: true,
-                    borderColor: '#1a365d',
-                    backgroundColor: '#1a365d',
-                    borderWidth: 3,
-                    pointRadius: 5
-                }]
-            },
-            options: {
-                scales: {
-                    x: { min: -1, max: 5, grid: { color: '#e2e8f0' } },
-                    y: { min: -1, max: 5, grid: { color: '#e2e8f0' } }
-                },
-                plugins: {
-                    legend: { display: true }
-                }
-            }
-        });
         // GRÁFICO TEMA 1: COMPLEJIDAD BIG O
         const ctxComplejidad = document.getElementById('grafo-complejidad').getContext('2d');
         
