@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemáticas para videojuegos II</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+            onload="renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError : false
+            });">
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* --- VARIABLES Y CONFIGURACIÓN BÁSICA --- */
+        :root {
+            --bg-color: #fcfcfc;
+            --text-color: #2b2b2b;
+            --primary-color: #1a365d; /* Azul Marino Académico */
+            --secondary-color: #4a5568;
+            --accent-color: #3182ce;
+            --sidebar-bg: #f7fafc;
+            --sidebar-border: #e2e8f0;
+            --code-bg: #f8f9fa;
+            --code-border: #e9ecef;
+            --callout-def-border: #3182ce;
+            --callout-challenge-border: #38a169;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            display: flex;
+        }
+
+        /* --- SIDEBAR DE NAVEGACIÓN --- */
+        aside {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        aside h2 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid var(--sidebar-border);
+            padding-bottom: 0.5rem;
+        }
+
+        aside ul {
+            list-style: none;
+        }
+
+        aside ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        aside ul li a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: block;
+            padding: 0.4rem 0.75rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        aside ul li a:hover, aside ul li a.active {
+            background-color: #edf2f7;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* --- CONTENIDOR PRINCIPAL --- */
+        main {
+            margin-left: 280px;
+            padding: 3rem 4rem;
+            max-width: 900px;
+            width: calc(100% - 280px);
+        }
+
+        /* --- PORTADA Y TITULARES --- */
+        header {
+            margin-bottom: 4rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            padding-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        header p.subtitle {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 2rem;
+        }
+
+        h2.section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        p {
+            margin-bottom: 1.25rem;
+        }
+
+        /* --- SÍMBOLOS Y SANGRÍA PARA LISTAS DEL CONTENIDO --- */
+        main ul, main ol {
+            padding-left: 2rem; /* Añade la sangría automáticamente */
+            margin-bottom: 1.25rem; /* Mantiene el espaciado inferior igual que los párrafos */
+        }
+
+        main li {
+            margin-bottom: 0.5rem; /* Da un poco de aire entre cada punto de la lista */
+        }
+
+        /* --- ELEMENTOS DE MAQUETACIÓN ESPECIALES --- */
+        
+        /* Bloques de Código */
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 6px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        code {
+            font-family: "Fira Code", Consolas, Monaco, monospace;
+            font-size: 0.9rem;
+            color: #d63384; /* Color sutil para código inline */
+        }
+
+        pre code {
+            color: var(--text-color); /* Restablecer para bloques de código completo */
+        }
+
+        /* Tablas / Matrices */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--sidebar-border);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        /* Cuadros Destacados (Callouts) */
+        .callout {
+            border-left: 4px solid;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 6px 6px 0;
+            background-color: #f7fafc;
+        }
+
+        .callout.definition {
+            border-left-color: var(--callout-def-border);
+            background-color: #ebf8ff;
+        }
+
+        .callout.challenge {
+            border-left-color: var(--callout-challenge-border);
+            background-color: #f0fff4;
+        }
+
+        .callout-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .callout.definition .callout-title { color: #2b6cb0; }
+        .callout.challenge .callout-title { color: #276749; }
+
+        /* Contenedor de Gráficos */
+        .canvas-container {
+            background: #ffffff;
+            border: 1px solid var(--sidebar-border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <h2>Contenidos</h2>
+        <nav>
+            <ul>
+                <li><a href="#tema-0"><i class="fa-solid fa-bookmark"></i> Tema 0: Introducción</a></li>
+                <li><a href="#tema-1"><i class="fa-solid fa-chart-line"></i> Tema 1: Análisis y costes de algoritmos</a></li>
+
+                </ul>
+        </nav>
+    </aside>
+
+    <main>
+        
+        <header>
+            <h1>Matemáticas para videojuegos II</h1>
+            <p class="subtitle">Grado en Diseño y Desarrollo de Videojuegos y Experiencias Interactivas.</p>
+        </header>
+
+        <section id="tema-0">
+            <h2 class="section-title">
+                <i class="fa-solid fa-graduation-cap"></i> Tema 0: Introducción y Entorno de Trabajo
+            </h2>
+            <p>Bienvenido al libro digital interactivo de la asignatura. Aquí encontrarás todo el contenido relacionado con la asignatura, además de ejercicios, ayudar y recursos adicionales..</p>
+
+            <h3>1. Contenido de la asignatura</h3>
+                <ul>
+                <li><a href="#tema-1">Tema 1: Análisis y costes de algoritmos</a></li>
+                </ul>
+            <h3>2. Sistema de evaluación</h3>
+            <ul>
+                <li><strong>Entregables individuales 25%:</strong> Consistirán en entregables cada dos semanas para practicar contenido de la asignatura.</li>
+                <li><strong>Exámenes 45% :</strong> 2 parciales y/o un final. Los exámenes serán con ordenador. </li>
+                <li><strong>Proyecto grupal 30% :</strong> Diseñar y desarrollar un videojuego con el contenido de la asignatura. Habrán exposiciones/devlogs mensuales para controlar el avance.</li>
+            </ul>
+
+            <p>Hay que sacar mínimo un 4 en todos los apartados para aprobar la asignatura.</p>
+
+            <div class="callout challenge">
+                <div class="callout-title"><i class="fa-solid fa-robot"></i> ¿Se podrá usar IA?</div>
+                <p>Se podrá usar IA durante la asignatura, aunque no es aconsejable para poder asentar mucho mejor los conocimientos. Además,<strong> el profesor podrá exigir defender en persona, ya sea mediante exposición o pequeña entrevista, 
+                    cualquier trabajo de los anteriormente mencionados.</strong> </p>
+            </div>
+
+            <h3>3. Visualización Gráfica Interactiva</h3>
+            <p>Utilizaremos gráficos interactivos para entender visualmente el comportamiento de los vectores y los sistemas de coordenadas:</p>
+
+            <div class="canvas-container">
+                <canvas id="grafo-ejemplo"></canvas>
+            </div>
+
+            <div class="callout challenge">
+                <div class="callout-title"><i class="fa-solid fa-code"></i> Reto de Programación</div>
+                <p>¿Podrías optimizar la función <code>Magnitude()</code> para comparaciones de distancia sin utilizar la costosa operación de raíz cuadrada (<code>Sqrt</code>)? Lo resolveremos en el Tema 1.</p>
+            </div>
+        </section>
+        <section id="tema-1">
+            <h2 class="section-title">
+                <i class="fa-solid fa-stopwatch"></i> Tema 1: Análisis y costes de algoritmos
+            </h2>
+            
+            <h3>1. ¿Qué es la eficiencia?</h3>
+            <p>En programación, que un código funcione no es suficiente; debe ser eficiente. Esto significa resolver el problema consumiendo los mínimos recursos posibles.</p>
+            <p>A menudo hay que elegir: para ganar tiempo (velocidad), solemos gastar más memoria (índices, tablas auxiliares), y viceversa.</p>
+
+            <div class="callout definition">
+                <div class="callout-title"><i class="fa-solid fa-microchip"></i> Tipos de Costes Principales</div>
+                <ul>
+                    <li><strong>Coste Temporal:</strong> Cuánto tiempo tarda el procesador (CPU) en ejecutarlo. Es el más crítico habitualmente.</li>
+                    <li><strong>Coste Espacial:</strong> Cuánta memoria (RAM) extra necesita para funcionar.</li>
+                </ul>
+            </div>
+
+            <h3>2. ¿Cómo medimos el coste?</h3>
+            <p>No medimos la eficiencia en segundos porque eso depende de la potencia de tu ordenador o del lenguaje usado. Para medir de forma científica usamos:</p>
+            <ul>
+                <li><strong>Pasos:</strong> Una operación básica (sumar, asignar variable, comparar if) cuenta como 1 paso.</li>
+                <li><strong>Talla del problema ($n$):</strong> Es el tamaño de los datos de entrada. Si ordenas una lista de 100 números, $n=100$.</li>
+            </ul>
+            <p>El objetivo es encontrar una fórmula (función) que nos diga cuántos pasos da el algoritmo según crece $n$.</p>
+
+            <h4>Ejemplo visual: Calcular $n^2$</h4>
+            <p>Imagina tres formas de calcular el cuadrado de un número $n$:</p>
+            <ul>
+                <li><strong>Forma A (Directa):</strong> $m = n * n$. Tarda 1 paso, sin importar lo grande que sea $n$.</li>
+                <li><strong>Forma B (Sumas):</strong> Sumar $n$ veces (ej: $5^2 = 5+5+5+5+5$). Si $n$ es 1000, hace 1000 sumas.</li>
+                <li><strong>Forma C (Contar):</strong> Contar de uno en uno hasta llegar al resultado. Si $n$ es 1000, cuenta hasta 1.000.000 ($1000 \times 1000$).</li>
+            </ul>
+
+            <div class="callout definition">
+                <div class="callout-title"><i class="fa-solid fa-lightbulb"></i> La clave del crecimiento</div>
+                <p>Para $n$ pequeño no notarás la diferencia. Pero si $n$ es 1 millón: la Forma A es instantánea, la B tarda un poco, y la C podría tardar años. Lo importante no es el tiempo exacto, sino <strong>cómo crece el tiempo al aumentar los datos</strong>.</p>
+            </div>
+            
+            <h3>3. El Peor Caso es el que importa</h3>
+            <p>Como el tiempo puede variar según los datos (ej: ordenar una lista que ya está ordenada es rápido), nos ponemos siempre en tres situaciones:</p>
+            <ul>
+                <li><strong>Mejor Caso:</strong> Tienes suerte y los datos son ideales. Poco útil en la práctica.</li>
+                <li><strong>Peor Caso:</strong> Todo sale mal (ej: buscas un dato que está al final). Este es el que usamos en ingeniería, porque nos garantiza que el programa nunca tardará más que esto.</li>
+                <li><strong>Caso Promedio:</strong> Lo que suele ocurrir normalmente.</li>
+            </ul>
+
+            <h3>4. La Notación "O Grande" ($O$)</h3>
+            <p>Es la etiqueta que le ponemos al algoritmo para clasificarlo. Nos dice el "techo" de su crecimiento. Aquí tienes el ranking de eficiencia, de mejor a peor:</p>
+
+            <ul>
+                <li>$O(1)$ <strong>Constante:</strong> Instantáneo. No depende de los datos (ej: acceder a un array).</li>
+                <li>$O(\log n)$ <strong>Logarítmica:</strong> Rapidísimo. Si duplicas los datos, solo añades un paso más (ej: Búsqueda Binaria).</li>
+                <li>$O(n)$ <strong>Lineal:</strong> Proporcional. Si doblas los datos, doblas el tiempo (ej: leer una lista).</li>
+                <li>$O(n \log n)$ <strong>Cuasilineal:</strong> Muy rápido. El estándar para ordenar datos (ej: Quicksort, Mergesort).</li>
+                <li>$O(n^2)$ <strong>Cuadrática:</strong> Lento. Bucles anidados. Aceptable solo para pocos datos (ej: Burbuja).</li>
+                <li>$O(2^n)$ <strong>Exponencial:</strong> Inviable. El tiempo se dispara imposiblemente rápido (ej: contraseñas por fuerza bruta).</li>
+            </ul>
+
+            <div class="canvas-container" style="max-width: 700px;">
+                <canvas id="grafo-complejidad"></canvas>
+            </div>
+
+            <h3>5. Pila de Llamadas y Costes (Coste Espacial)</h3>
+            <p>El Coste Espacial (o complejidad espacial) mide cuánta memoria necesita un algoritmo para ejecutarse, en función del tamaño de la entrada ($n$). No contamos el espacio que ocupan los datos originales (el vector de entrada), sino la memoria extra que necesitamos para trabajar.</p>
+
+            <p>¿Qué incluye exactamente ese "espacio extra"?</p>
+            <ol>
+                <li><strong>Variables Simples:</strong> Contadores ($i, j$), acumuladores (suma), variables temporales (temp). Suelen ocupar espacio constante $O(1)$.</li>
+                <li><strong>Estructuras Auxiliares:</strong> Si creas un nuevo vector, una matriz o una lista para guardar resultados intermedios. Si copias un vector de tamaño $n$, gastas $O(n)$ de memoria.</li>
+                <li><strong>Llamadas Recursivas (La Memoria Oculta):</strong> Este es el punto más crítico y difícil de ver. Cada vez que una función se llama a sí misma, el ordenador debe guardar el estado actual (variables locales, punto de retorno) en una zona de memoria llamada Pila de Llamadas (Stack).</li>
+            </ol>
+
+            <h4>Ejemplo: La Secuencia de Fibonacci</h4>
+            <p>Comparar la versión recursiva e iterativa de Fibonacci ilustra perfectamente esta diferencia:</p>
+
+            <pre><code>// Fibonacci Iterativo: Coste Temporal O(n) | Espacial O(1)
+int FibonacciIterativo(int n) {
+    int a = 0, b = 1, temp; // Usa variables simples
+    for (int i = 2; i <= n; i++) {
+        temp = a + b;
+        a = b;
+        b = temp;
+    }
+    return b;
+}
+
+// Fibonacci Recursivo: Coste Temporal O(2^n) | Espacial O(n)
+int FibonacciRecursivo(int n) {
+    if (n <= 1) return n;
+    return FibonacciRecursivo(n - 1) + FibonacciRecursivo(n - 2); // Repite cálculos millones de veces
+}</code></pre>
+
+            <div class="callout challenge">
+                <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> ¡Cuidado con el Stack Overflow!</div>
+                <p>En el Fibonacci recursivo, aunque no declaras vectores, para calcular $fib(n)$ necesitas llegar hasta $fib(1)$. Esto crea una cadena de llamadas abiertas de profundidad $n$ en la pila. Si $n$ es muy grande, puedes agotar la memoria y provocar un error de Stack Overflow.</p>
+            </div>
+
+            <h3>6. Algoritmos Famosos: Tabla de Costes Temporales y Espaciales</h3>
+            <p>A continuación, se detallan los costes. Recuerda que el Coste Espacial mostrado es la memoria auxiliar (extra); no contamos el espacio del propio vector de datos, que siempre es $n$.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Algoritmo</th>
+                        <th>Tiempo (Mejor)</th>
+                        <th>Tiempo (Promedio)</th>
+                        <th>Tiempo (Peor)</th>
+                        <th>Espacio (Auxiliar)</th>
+                        <th>Notas importantes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Búsqueda Lineal</td>
+                        <td>$O(1)$</td>
+                        <td>$O(n)$</td>
+                        <td>$O(n)$</td>
+                        <td>$O(1)$</td>
+                        <td>No requiere memoria extra.</td>
+                    </tr>
+                    <tr>
+                        <td>Búsqueda Binaria</td>
+                        <td>$O(1)$</td>
+                        <td>$O(\log n)$</td>
+                        <td>$O(\log n)$</td>
+                        <td>$O(1)$</td>
+                        <td>Versión iterativa. Muy eficiente en espacio y tiempo.</td>
+                    </tr>
+                    <tr>
+                        <td>Burbuja</td>
+                        <td>$O(n)$</td>
+                        <td>$O(n^2)$</td>
+                        <td>$O(n^2)$</td>
+                        <td>$O(1)$</td>
+                        <td>Ordena "in-place", por eso gasta poco espacio.</td>
+                    </tr>
+                    <tr>
+                        <td>Inserción</td>
+                        <td>$O(n)$</td>
+                        <td>$O(n^2)$</td>
+                        <td>$O(n^2)$</td>
+                        <td>$O(1)$</td>
+                        <td>Muy eficiente ($O(n)$ tiempo) si la lista ya está casi ordenada.</td>
+                    </tr>
+                    <tr>
+                        <td>Selección</td>
+                        <td>$O(n^2)$</td>
+                        <td>$O(n^2)$</td>
+                        <td>$O(n^2)$</td>
+                        <td>$O(1)$</td>
+                        <td>Ineficiente en tiempo, pero muy bajo consumo de memoria.</td>
+                    </tr>
+                    <tr>
+                        <td>Quicksort</td>
+                        <td>$O(n \log n)$</td>
+                        <td>$O(n \log n)$</td>
+                        <td>$O(n^2)$</td>
+                        <td>$O(\log n)$</td>
+                        <td>Gasta espacio en la pila debido a la recursividad.</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p><strong>Resumen de uso:</strong></p>
+            <ul>
+                <li><strong>Para ahorrar memoria ($O(1)$):</strong> Usa algoritmos iterativos como Inserción (si son pocos datos) o Heapsort (si son muchos, aunque es más complejo de programar).</li>
+                <li><strong>Para velocidad ($O(n \log n)$):</strong> Usa Quicksort. Aunque gasta un poco de memoria en la pila ($O(\log n)$), es el más rápido en la práctica.</li>
+                <li><strong>¡Cuidado con la recursividad!</strong> Algoritmos como Quicksort pueden tener un coste espacial oculto en el peor caso ($O(n)$) si la partición de datos es mala, pudiendo desbordar la pila.</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <script>
+        const ctx = document.getElementById('grafo-ejemplo').getContext('2d');
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Vector de Velocidad (V)',
+                    data: [{x: 0, y: 0}, {x: 4, y: 3}],
+                    showLine: true,
+                    borderColor: '#1a365d',
+                    backgroundColor: '#1a365d',
+                    borderWidth: 3,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                scales: {
+                    x: { min: -1, max: 5, grid: { color: '#e2e8f0' } },
+                    y: { min: -1, max: 5, grid: { color: '#e2e8f0' } }
+                },
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        });
+        // GRÁFICO TEMA 1: COMPLEJIDAD BIG O
+        const ctxComplejidad = document.getElementById('grafo-complejidad').getContext('2d');
+        
+        // Generar puntos para las curvas
+        const labels = Array.from({length: 20}, (_, i) => i + 1);
+        const dataO1 = labels.map(() => 5);
+        const dataOLogN = labels.map(n => Math.log2(n) * 10);
+        const dataON = labels.map(n => n * 2);
+        const dataONLogN = labels.map(n => n * Math.log2(n));
+        const dataON2 = labels.map(n => Math.pow(n, 2) / 2);
+
+        new Chart(ctxComplejidad, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'O(1) Constante', data: dataO1, borderColor: '#38a169', backgroundColor: 'transparent', tension: 0.4 },
+                    { label: 'O(log n) Logarítmica', data: dataOLogN, borderColor: '#3182ce', backgroundColor: 'transparent', tension: 0.4 },
+                    { label: 'O(n) Lineal', data: dataON, borderColor: '#d69e2e', backgroundColor: 'transparent', tension: 0.4 },
+                    { label: 'O(n log n) Cuasilineal', data: dataONLogN, borderColor: '#dd6b20', backgroundColor: 'transparent', tension: 0.4 },
+                    { label: 'O(n²) Cuadrática', data: dataON2, borderColor: '#e53e3e', backgroundColor: 'transparent', tension: 0.4 }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Crecimiento de Operaciones según Entrada (n)' }
+                },
+                scales: {
+                    y: { min: 0, max: 100, title: { display: true, text: 'Operaciones / Tiempo' } },
+                    x: { title: { display: true, text: 'Datos de Entrada (n)' } }
+                },
+                elements: { point: { radius: 0 } } // Oculta los puntos para dejar curvas limpias
+            }
+        });
+    </script>
+</body>
+</html>
