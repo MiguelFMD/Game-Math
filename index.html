@@ -24,232 +24,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        /* --- VARIABLES Y CONFIGURACIÓN BÁSICA --- */
-        :root {
-            --bg-color: #fcfcfc;
-            --text-color: #2b2b2b;
-            --primary-color: #1a365d; /* Azul Marino Académico */
-            --secondary-color: #4a5568;
-            --accent-color: #3182ce;
-            --sidebar-bg: #f7fafc;
-            --sidebar-border: #e2e8f0;
-            --code-bg: #f8f9fa;
-            --code-border: #e9ecef;
-            --callout-def-border: #3182ce;
-            --callout-challenge-border: #38a169;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.7;
-            display: flex;
-        }
-
-        /* --- SIDEBAR DE NAVEGACIÓN --- */
-        aside {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 280px;
-            height: 100vh;
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--sidebar-border);
-            padding: 2rem 1.5rem;
-            overflow-y: auto;
-        }
-
-        aside h2 {
-            font-size: 1.1rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 2px solid var(--sidebar-border);
-            padding-bottom: 0.5rem;
-        }
-
-        aside ul {
-            list-style: none;
-        }
-
-        aside ul li {
-            margin-bottom: 0.75rem;
-        }
-
-        aside ul li a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            font-size: 0.95rem;
-            display: block;
-            padding: 0.4rem 0.75rem;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-
-        aside ul li a:hover, aside ul li a.active {
-            background-color: #edf2f7;
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-
-        /* --- CONTENIDOR PRINCIPAL --- */
-        main {
-            margin-left: 280px;
-            padding: 3rem 4rem;
-            max-width: 900px;
-            width: calc(100% - 280px);
-        }
-
-        /* --- PORTADA Y TITULARES --- */
-        header {
-            margin-bottom: 4rem;
-            border-bottom: 1px solid var(--sidebar-border);
-            padding-bottom: 2rem;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-
-        header p.subtitle {
-            font-size: 1.1rem;
-            color: var(--secondary-color);
-            font-style: italic;
-        }
-
-        section {
-            margin-bottom: 4rem;
-            scroll-margin-top: 2rem;
-        }
-
-        h2.section-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        h3 {
-            font-size: 1.3rem;
-            color: var(--secondary-color);
-            margin: 1.5rem 0 0.75rem 0;
-        }
-
-        p {
-            margin-bottom: 1.25rem;
-        }
-
-        /* --- SÍMBOLOS Y SANGRÍA PARA LISTAS DEL CONTENIDO --- */
-        main ul, main ol {
-            padding-left: 2rem; /* Añade la sangría automáticamente */
-            margin-bottom: 1.25rem; /* Mantiene el espaciado inferior igual que los párrafos */
-        }
-
-        main li {
-            margin-bottom: 0.5rem; /* Da un poco de aire entre cada punto de la lista */
-        }
-
-        /* --- ELEMENTOS DE MAQUETACIÓN ESPECIALES --- */
-        
-        /* Bloques de Código */
-        pre {
-            background-color: var(--code-bg);
-            border: 1px solid var(--code-border);
-            border-radius: 6px;
-            padding: 1.25rem;
-            overflow-x: auto;
-            margin-bottom: 1.5rem;
-        }
-
-        code {
-            font-family: "Fira Code", Consolas, Monaco, monospace;
-            font-size: 0.9rem;
-            color: #d63384; /* Color sutil para código inline */
-        }
-
-        pre code {
-            color: var(--text-color); /* Restablecer para bloques de código completo */
-        }
-
-        /* Tablas / Matrices */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        th, td {
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--sidebar-border);
-            text-align: left;
-        }
-
-        th {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        /* Cuadros Destacados (Callouts) */
-        .callout {
-            border-left: 4px solid;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            border-radius: 0 6px 6px 0;
-            background-color: #f7fafc;
-        }
-
-        .callout.definition {
-            border-left-color: var(--callout-def-border);
-            background-color: #ebf8ff;
-        }
-
-        .callout.challenge {
-            border-left-color: var(--callout-challenge-border);
-            background-color: #f0fff4;
-        }
-
-        .callout-title {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .callout.definition .callout-title { color: #2b6cb0; }
-        .callout.challenge .callout-title { color: #276749; }
-
-        /* Contenedor de Gráficos */
-        .canvas-container {
-            background: #ffffff;
-            border: 1px solid var(--sidebar-border);
-            border-radius: 6px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            max-width: 500px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 
@@ -264,7 +39,8 @@
         </nav>
         <h2>Ejercicios</h2>
             <ul>
-                <li><a href="#repositorio"><i class="fa-solid fa-dumbbell"></i> Ejercicio 0: Introducción al repositorio</a></li>
+                <li><a href="#clonar-repositorio"><i class="fa-solid fa-dumbbell"></i> Ejercicio 0: Introducción al repositorio</a></li>
+                <li><a href="#ejercicio-1"><i class="fa-solid fa-dumbbell"></i> Ejercicio 1: Actualizar proyecto y entregar tarea</a></li>
             </ul>
     </aside>
 
@@ -302,7 +78,7 @@
 
             <h3>3. Metodología de trabajo</h3>
             <p>Utilizaremos el siguiente <a href="https://github.com/MiguelFMD/GameMath_II_Sandbox_Project"> repositorio</a> tanto para ejercicios de clase, tareas y exámenes. 
-                Para saber cómo usar el repositorio es recomendable realizar la <a href="#repositorio"> introducción al repositorio</a>.
+                Para saber cómo usar el repositorio es recomendable realizar la <a href="#clonar-repositorio"> introducción al repositorio</a>.
             </p>
 
             
@@ -478,7 +254,7 @@ int FibonacciRecursivo(int n) {
             </ul>
         </section>
         
-        <section id="repositorio">
+        <section id="clonar-repositorio">
             <h2 class="section-title">
                 <i class="fa-solid fa-dumbbell"></i> Ejercicio 0: Introducción al repositorio
             </h2>
@@ -527,46 +303,23 @@ int FibonacciRecursivo(int n) {
                     <li> Ya puedes abrir el proyecto. </li>
                 </ul>
 
+        </section> 
+
+        <section id="ejercicio-1">
+            <h2 class="section-title">
+                <i class="fa-solid fa-dumbbell"></i> Ejercicio 1: Actualizar proyecto y entregar tarea
+            </h2>
+
+            <p> En un proyecto con un repositorio normal los colaboradores se bajan actualizaciones del proyecto (fecth & pull), y luego suben sus actualizaciones (push) para que el resto
+                pueda trabajar con esos nuevos cambios.</p>
+            <p> En nuestro caso vamos a trabajar de manera diferente, el profesor subirá actualizaciones al proyecto y tú <strong> únicamente </strong> deberás bajarte los cambios. 
+                Cada ejercicio tendrá una entrega en el campus virtual la cual se deberá entregar de una forma concreta. </p>
+            <p> Este ejercicio sirve como práctica para saber cómo actualizar el proyecto (bajarte los cambios si hay) y poder  </p>           
+
         </section>
 
     </main>
 
-    <script>
-        // GRÁFICO TEMA 1: COMPLEJIDAD BIG O
-        const ctxComplejidad = document.getElementById('grafo-complejidad').getContext('2d');
-        
-        // Generar puntos para las curvas
-        const labels = Array.from({length: 20}, (_, i) => i + 1);
-        const dataO1 = labels.map(() => 5);
-        const dataOLogN = labels.map(n => Math.log2(n) * 10);
-        const dataON = labels.map(n => n * 2);
-        const dataONLogN = labels.map(n => n * Math.log2(n));
-        const dataON2 = labels.map(n => Math.pow(n, 2) / 2);
-
-        new Chart(ctxComplejidad, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    { label: 'O(1) Constante', data: dataO1, borderColor: '#38a169', backgroundColor: 'transparent', tension: 0.4 },
-                    { label: 'O(log n) Logarítmica', data: dataOLogN, borderColor: '#3182ce', backgroundColor: 'transparent', tension: 0.4 },
-                    { label: 'O(n) Lineal', data: dataON, borderColor: '#d69e2e', backgroundColor: 'transparent', tension: 0.4 },
-                    { label: 'O(n log n) Cuasilineal', data: dataONLogN, borderColor: '#dd6b20', backgroundColor: 'transparent', tension: 0.4 },
-                    { label: 'O(n²) Cuadrática', data: dataON2, borderColor: '#e53e3e', backgroundColor: 'transparent', tension: 0.4 }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: { display: true, text: 'Crecimiento de Operaciones según Entrada (n)' }
-                },
-                scales: {
-                    y: { min: 0, max: 100, title: { display: true, text: 'Operaciones / Tiempo' } },
-                    x: { title: { display: true, text: 'Datos de Entrada (n)' } }
-                },
-                elements: { point: { radius: 0 } } // Oculta los puntos para dejar curvas limpias
-            }
-        });
-    </script>
+    <script src="main.js"> </script>
 </body>
 </html>

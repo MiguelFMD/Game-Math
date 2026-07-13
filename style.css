@@ -1,0 +1,223 @@
+/* --- VARIABLES Y CONFIGURACIÓN BÁSICA --- */
+:root {
+    --bg-color: #fcfcfc;
+    --text-color: #2b2b2b;
+    --primary-color: #1a365d; /* Azul Marino Académico */
+    --secondary-color: #4a5568;
+    --accent-color: #3182ce;
+    --sidebar-bg: #f7fafc;
+    --sidebar-border: #e2e8f0;
+    --code-bg: #f8f9fa;
+    --code-border: #e9ecef;
+    --callout-def-border: #3182ce;
+    --callout-challenge-border: #38a169;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.7;
+    display: flex;
+}
+
+/* --- SIDEBAR DE NAVEGACIÓN --- */
+aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+}
+
+aside h2 {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--sidebar-border);
+    padding-bottom: 0.5rem;
+}
+
+aside ul {
+    list-style: none;
+}
+
+aside ul li {
+    margin-bottom: 0.75rem;
+}
+
+aside ul li a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: block;
+    padding: 0.4rem 0.75rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+aside ul li a:hover, aside ul li a.active {
+    background-color: #edf2f7;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* --- CONTENIDOR PRINCIPAL --- */
+main {
+    margin-left: 280px;
+    padding: 3rem 4rem;
+    max-width: 900px;
+    width: calc(100% - 280px);
+}
+
+/* --- PORTADA Y TITULARES --- */
+header {
+    margin-bottom: 4rem;
+    border-bottom: 1px solid var(--sidebar-border);
+    padding-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+header p.subtitle {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    font-style: italic;
+}
+
+section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 2rem;
+}
+
+h2.section-title {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+    color: var(--secondary-color);
+    margin: 1.5rem 0 0.75rem 0;
+}
+
+p {
+    margin-bottom: 1.25rem;
+}
+
+/* --- SÍMBOLOS Y SANGRÍA PARA LISTAS DEL CONTENIDO --- */
+main ul, main ol {
+    padding-left: 2rem; /* Añade la sangría automáticamente */
+    margin-bottom: 1.25rem; /* Mantiene el espaciado inferior igual que los párrafos */
+}
+
+main li {
+    margin-bottom: 0.5rem; /* Da un poco de aire entre cada punto de la lista */
+}
+
+/* --- ELEMENTOS DE MAQUETACIÓN ESPECIALES --- */
+
+/* Bloques de Código */
+pre {
+    background-color: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 6px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+}
+
+code {
+    font-family: "Fira Code", Consolas, Monaco, monospace;
+    font-size: 0.9rem;
+    color: #d63384; /* Color sutil para código inline */
+}
+
+pre code {
+    color: var(--text-color); /* Restablecer para bloques de código completo */
+}
+
+/* Tablas / Matrices */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+th, td {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--sidebar-border);
+    text-align: left;
+}
+
+th {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Cuadros Destacados (Callouts) */
+.callout {
+    border-left: 4px solid;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0 6px 6px 0;
+    background-color: #f7fafc;
+}
+
+.callout.definition {
+    border-left-color: var(--callout-def-border);
+    background-color: #ebf8ff;
+}
+
+.callout.challenge {
+    border-left-color: var(--callout-challenge-border);
+    background-color: #f0fff4;
+}
+
+.callout-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.callout.definition .callout-title { color: #2b6cb0; }
+.callout.challenge .callout-title { color: #276749; }
+
+/* Contenedor de Gráficos */
+.canvas-container {
+    background: #ffffff;
+    border: 1px solid var(--sidebar-border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    max-width: 500px;
+}
