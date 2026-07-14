@@ -17,13 +17,15 @@ function cargarMenu(rutaBase) {
             <ul>
                 <li><a href="${rutaBase}index.html"><i class="fa-solid fa-bookmark"></i> Tema 0: Introducción</a></li>
                 <li><a href="${rutaBase}contenido/tema-1.html"><i class="fa-solid fa-bookmark"></i> Tema 1: Análisis y costes de algoritmos</a></li>
+                <li><a href="${rutaBase}contenido/tema-2.html"><i class="fa-solid fa-bookmark"></i> Tema 2: Recursividad</a></li>
             </ul>
         </nav>
         <h2>Ejercicios</h2>
         <ul>
             <li><a href="${rutaBase}ejercicios/ejercicio-0.html"><i class="fa-solid fa-dumbbell"></i> Ejercicio 0: Introducción al repositorio</a></li>
             <li><a href="${rutaBase}ejercicios/ejercicio-1.html"><i class="fa-solid fa-dumbbell"></i> Ejercicio 1: Actualizar proyecto</a></li>
-        </ul>
+            <li><a href="${rutaBase}ejercicios/ejercicio-2.html"><i class="fa-solid fa-dumbbell"></i> Ejercicio 2: Descendiente de GameObject</a></li>
+            </ul>
     `;
 
     // Inicializamos la lógica del tema una vez inyectado el HTML del menú

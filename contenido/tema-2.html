@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tema 2: Recursividad - Matemáticas para videojuegos II</title>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark-mode');
+            } else {
+                document.documentElement.classList.remove('dark-mode');
+            }
+        })();
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" 
+            onload="renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError : false
+            });">
+    </script>
+    
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+    <aside></aside>
+
+    <main>
+        <section id="tema-2">
+            <h2 class="section-title">
+                <i class="fa-solid fa-code-branch"></i> Tema 2: Recursividad en videojuegos y programación
+            </h2>
+            
+            <h3>1. ¿Qué se entiende por recursividad?</h3>
+            <p>La recursividad (o recursión) es aquella propiedad que posee una función por la cual <strong>dicha función puede llamarse a sí misma</strong>. Se puede utilizar como una alternativa a la iteración (los bucles clásicos como <code>for</code> o <code>while</code>).</p>
+            
+            <p>Una solución recursiva es normalmente menos eficiente en términos de tiempo de computadora que una solución iterativa, debido a las operaciones auxiliares de memoria que conllevan las llamadas suplementarias. Sin embargo, en muchas circunstancias permite especificar soluciones naturales y sencillas a problemas que serían muy difíciles de resolver de otra forma.</p>
+
+            <h3>2. Estructura de la recursividad</h3>
+            <p>En matemáticas existen numerosas funciones que tienen carácter recursivo; de igual modo numerosas circunstancias y situaciones de la vida ordinaria tienen 
+                carácter recursivo, por ejemplo, el factorial de un número o Fibonacci.</p>
+            <p>Hasta el momento, casi siempre hemos visto métodos que llaman a otras funciones distintas. Por ejemplo:</p>
+            <pre><code>private void Func1() {
+    print("Func1 llamada");
+    Func2();
+}
+
+private void Func2() {
+    print("Func2 llamada");
+}</code></pre>
+
+            <p>La recursividad ocurre cuando una función se llama a sí misma para resolver un problema más pequeño del mismo tipo. Para que no se ejecute infinitamente, requiere dos partes fundamentales:</p>
+            <ul>
+                <li><strong>Caso base:</strong> El momento en que se detiene la recursión (la condición de salida).</li>
+                <li><strong>Caso recursivo:</strong> La llamada a sí misma con un problema reducido.</li>
+            </ul>
+
+            <div class="callout definition">
+                <div class="callout-title"><i class="fa-solid fa-lightbulb"></i> La metáfora de la recursividad</div>
+                <p>"Es como mirarse en dos espejos enfrentados: la imagen se repite una y otra vez, hasta que algo (la distancia o el límite visual) la detiene."</p>
+            </div>
+
+            <pre><code>private void FuncRecursiva() {
+    // 1. Si llegamos al caso base, acabamos
+    return;
+    
+    // 2. Si no, se continua con la recursión:
+    FuncRecursiva();
+}</code></pre>
+
+            <h3>3. Ejemplos clásicos: El Factorial</h3>
+            <p>El factorial de un entero no negativo $n$, escrito $n!$, es el producto de todos los números hasta 1:</p>
+            $$n! = n \cdot (n-1) \cdot (n-2) \dots 1$$
+
+            <p> en el cual: </p>
+                $$0! = 1$$
+                $$1! = 1$$
+                $$2! = 2*1 = 2*1!$$
+                $$3! = 3*2*1 = 3*2!$$
+                $$4! = 4*3*2*1 = 4*3! ...$$
+            <p> así queda:  </p>
+                $$5! = 5 * 4 * 3 * 2 * 1 = 5 * 4! = 120$$    
+            
+            <p>Sabiendo que, por definición, $0! = 1$ y $1! = 1$, podemos deducir una definición recursiva:</p>
+            $$n! = n \cdot (n-1)! \quad \text{para } n > 1$$
+
+            <h4>Solución Iterativa</h4>
+            <p>El algoritmo que resuelve el factorial de forma iterativa utiliza un bucle. Como vimos en el Tema 1, este algoritmo tiene un coste temporal $O(n)$, ya que es directamente proporcional al tamaño del número $n$.</p>
+            <pre><code>int factorial_iterativo(int n) {
+    int resultado = 1;
+    for (int i = 2; i &lt;= n; i++) {
+        resultado *= i;
+    }
+    return resultado;
+}</code></pre>
+
+            <h4>Solución Recursiva</h4>
+            <p>El método de definición de una función en términos de sí misma se llama en matemáticas <strong>definición inductiva</strong>. El caso base es esencial para detener la cadena de llamadas.</p>
+            <pre><code>int factorial_recursivo(int n) {
+    // Condición de terminación (Caso Base)
+    if (n == 1 || n == 0) return 1;
+    
+    // Llamada recursiva
+    return n * factorial_recursivo(n - 1);
+}</code></pre>
+
+            <div class="callout challenge">
+                <div class="callout-title"><i class="fa-solid fa-triangle-exclamation"></i> Condición de terminación y Desbordamiento</div>
+                <p>Si no se establece una condición de terminación, el subprograma continuaría indefinidamente llamándose a sí mismo hasta agotar la memoria de la Pila de Llamadas (Stack Overflow). Además, dado que el valor de un factorial aumenta de forma vertiginosa, es conveniente en el diseño definir el tipo de dato como un valor real (ej. <code>long</code> o <code>double</code>) para evitar desbordamientos de la variable.</p>
+            </div>
+
+            <h3>4. Más ejemplos: Producto y Fibonacci</h3>
+            
+            <h4>Producto de números naturales</h4>
+            <p>El producto $a \cdot b$, donde $a$ y $b$ son enteros positivos, se puede definir recursivamente como la suma repetida de $a$.</p>
+            <ul>
+                <li><strong>Caso base:</strong> $a \cdot b = a \quad \text{si } b = 1$</li>
+                <li><strong>Caso recursivo:</strong> $a \cdot b = a + (a \cdot (b-1)) \quad \text{si } b > 1$</li>
+            </ul>
+            <pre><code>int producto(int a, int b) {
+    if (b == 1) return a;
+    return a + producto(a, b - 1);
+}</code></pre>
+
+            <h4>Serie de Fibonacci</h4>
+            <p>La serie comienza con 0 y 1, y cada elemento posterior es la suma de los dos anteriores. La definición recursiva requiere <strong>dos llamadas a sí misma</strong> por cada iteración:</p>
+            <pre><code>int fibonacci_recursivo(int n) {
+    if (n &lt;= 1) return n;
+    return fibonacci_recursivo(n - 1) + fibonacci_recursivo(n - 2);
+}</code></pre>
+            <p><em>Nota: Como vimos en el análisis de costes, esta doble llamada genera un árbol exponencial, dándole una complejidad temporal altísima de $O(2^n)$.</em></p>
+
+            <h3>5. Ejercicios de recursividad</h3>
+            <p>Implementa las siguientes funciones utilizando metodologías recursivas en C#:</p>
+            <ol>
+                <li>Contar las cifras de un entero no negativo $n$. <em>(Pista: si divides por división entera entre 10, le vas quitando cifras al número. Ej: 1234 / 10 = 123).</em></li>
+                <li>Contar las veces que una cifra $c$ aparece en un entero no negativo $n$. <em>(Pista: piensa cuál es el resultado de 1234 % 10).</em></li>
+                <li>Averiguar si todas las cifras de un entero no negativo $n$ son pares.</li>
+                <li>Averiguar si un dato $d$ aparece en un vector no ordenado $v$.</li>
+                <li>Contar las veces que un dato $d$ aparece en un vector no ordenado $v$.</li>
+                <li>Mostrar en la consola los elementos de un vector no ordenado $v$ en orden natural (del primero al último), uno en cada línea.</li>
+                <li>Mostrar en la consola los elementos de un vector no ordenado $v$ en orden inverso (del último al primero), uno en cada línea.</li>
+                <li>Averiguar si un vector no vacío $v$ está ordenado de menor a mayor.</li>
+                <li>Encontrar el menor elemento en un vector no ordenado y no vacío $v$.</li>
+                <li>Averiguar si todos los elementos de un vector no ordenado y no vacío $v$ son mayores que un dato $d$.</li>
+            </ol>
+
+            <div class="callout challenge">
+                <div class="callout-title"><i class="fa-solid fa-dumbbell"></i> Ejercicio Extra</div>
+                <p>Resuelve los ejercicios anteriores de manera iterativa (usando bucles for/while) y analiza el coste espacial y temporal de las dos versiones (recursiva vs. iterativa) usando la Notación O Grande que aprendimos en el Tema 1.</p>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="../main.js"></script>
+    <script>
+        cargarMenu("../"); // Carga el índice dinámicamente ajustando las rutas
+    </script>
+</body>
+</html>
